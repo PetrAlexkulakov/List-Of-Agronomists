@@ -1,0 +1,12 @@
+.newUserButton {
+    width: 32%;
+    gap: 1%;
+    border-radius: 0;
+    border: 1px solid var(--color-primary);
+    padding: 1% 2%;
+}
+.imgPlus {
+    width: 22px;
+    height: 22px;
+    background: url('../../../assets/PlusCircle.svg') #FFF no-repeat center center;
+}

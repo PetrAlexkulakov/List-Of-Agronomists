@@ -1,0 +1,19 @@
+.tablePage {
+    padding: 0 5%;
+}
+.mainTable {
+    padding: 2%;
+}
+.icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 30%;
+    border: 1px solid var(--color-secondary);
+    padding: 5px 6px 5px 4px;
+}
+.imgEdit {
+    background: url('../../assets/Edit.svg') #FFF no-repeat center center;
+}
+.imgDelete {
+    background: url('../../assets/DeleteOutlined.svg') #FFF no-repeat center center;
+}

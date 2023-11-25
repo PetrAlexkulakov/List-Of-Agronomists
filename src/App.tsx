@@ -1,10 +1,10 @@
-import './App.css'
-import Form from './components/Form'
+import './App.scss'
+import Table from './pages/Table'
 
 function App() {
   return (
     <>
-      <Form />
+      <Table />
     </>
   )
 }
