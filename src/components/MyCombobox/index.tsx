@@ -1,21 +1,21 @@
 import { SetStateAction, useState } from 'react'
 import { Combobox } from '@headlessui/react'
-import { IParticipant, participants } from '../../share/participants'
+import { IParticipant } from '../../share/participants'
 import styles from './styles.module.scss'
 
-export function MyCombobox({ filteredPeople, setFilteredPeople }: {
+export function MyCombobox({ filteredPeople, setViewedPeople }: {
     filteredPeople: IParticipant[],
-    setFilteredPeople: React.Dispatch<SetStateAction<IParticipant[]>>
+    setViewedPeople: React.Dispatch<SetStateAction<IParticipant[]>>
   }) {
   const [selectedPerson, setSelectedPerson] = useState('')
   const [query, setQuery] = useState('')
 
   const handleSelectPerson = (value: string) => {
     setSelectedPerson(value);
-    setFilteredPeople(
+    setViewedPeople(
         query === ''
-          ? participants
-          : participants.filter((person, index, self) => {
+          ? filteredPeople
+          : filteredPeople.filter((person, index, self) => {
               const matchDepartment = person.department.toLowerCase().includes(query.toLowerCase());
               const matchName = person.name.toLowerCase().includes(query.toLowerCase());
 

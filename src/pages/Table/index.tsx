@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MyCombobox } from "../../components/MyCombobox"
 import { participants } from "../../share/participants"
 import NewUserButton from "./NewUserButton";
@@ -6,6 +6,18 @@ import styles from './styles.module.scss';
 
 const Table = () => {
   const [filteredPeople, setFilteredPeople] = useState(participants)
+  const [viewedPeople, setViewedPeople] = useState(filteredPeople);
+
+  const handleDelete = (indexToDelete: number) => {
+    const updatedPeople = [...filteredPeople];
+    updatedPeople.splice(indexToDelete, 1);
+
+    setFilteredPeople(updatedPeople);
+  };
+
+  useEffect(() => {
+    setViewedPeople(filteredPeople);
+  }, [filteredPeople]);
 
   return (
     <div className={styles.tablePage + " w-9/12 float-right bg-slate-50"}>
@@ -14,9 +26,9 @@ const Table = () => {
         <h2>Участники хозяйства</h2>
         <NewUserButton>Добавить участника</NewUserButton>
       </div>
-      {filteredPeople &&
+      {viewedPeople &&
         <div className={styles.mainTable + " bg-white"}>
-          <MyCombobox filteredPeople={filteredPeople} setFilteredPeople={setFilteredPeople} />
+          <MyCombobox filteredPeople={filteredPeople} setViewedPeople={setViewedPeople} />
           <table className="w-full">
             <thead>
               <tr>
@@ -26,7 +38,7 @@ const Table = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredPeople.map((item, index) =>
+              {viewedPeople.map((item, index) =>
                 <tr key={index}>
                   <td>
                     <div className='font-bold'>{item.name}</div>
@@ -41,8 +53,11 @@ const Table = () => {
                   <td className="flex place-content-between content-center">
                     <div>{item.department}</div>
                     <div className="flex gap-1">
-                      <div className={styles.icon + ' ' + styles.imgEdit} />
-                      <div className={styles.icon + ' ' + styles.imgDelete} />
+                      <button className={styles.icon + ' ' + styles.imgEdit} />
+                      <button
+                        onClick={() => handleDelete(index)}
+                        className={styles.icon + ' ' + styles.imgDelete}
+                      />
                     </div>
                   </td>
                 </tr>
