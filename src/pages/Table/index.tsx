@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { MyCombobox } from "../../components/MyCombobox"
 import { participants } from "../../share/participants"
 import NewUserButton from "./NewUserButton";
 import styles from './styles.module.scss';
 
 const Table = () => {
+  const [filteredPeople, setFilteredPeople] = useState(participants)
+
   return (
     <div className={styles.tablePage + " w-9/12 float-right bg-slate-50"}>
       <p className="text-base">Агрономы и участники</p>
@@ -11,9 +14,9 @@ const Table = () => {
         <h2>Участники хозяйства</h2>
         <NewUserButton>Добавить участника</NewUserButton>
       </div>
-      {participants &&
+      {filteredPeople &&
         <div className={styles.mainTable + " bg-white"}>
-          <MyCombobox />
+          <MyCombobox filteredPeople={filteredPeople} setFilteredPeople={setFilteredPeople} />
           <table className="w-full">
             <thead>
               <tr>
@@ -23,10 +26,10 @@ const Table = () => {
               </tr>
             </thead>
             <tbody>
-              {participants.map((item, index) =>
+              {filteredPeople.map((item, index) =>
                 <tr key={index}>
                   <td>
-                    <div>{item.name}</div>
+                    <div className='font-bold'>{item.name}</div>
                     <p>{item.phone}</p>
                   </td>
                   <td>
@@ -35,9 +38,9 @@ const Table = () => {
                       <p>{item.activeUntil}</p>
                     </div>
                   </td>
-                  <td className="flex place-content-between">
+                  <td className="flex place-content-between content-center">
                     <div>{item.department}</div>
-                    <div className="flex">
+                    <div className="flex gap-1">
                       <div className={styles.icon + ' ' + styles.imgEdit} />
                       <div className={styles.icon + ' ' + styles.imgDelete} />
                     </div>

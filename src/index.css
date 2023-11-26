@@ -73,6 +73,10 @@ tr {
   border-bottom: 1px solid var(--color-secondary);
 }
 
+td, th {
+  padding: 1% 2%;
+}
+
 @media (prefers-color-scheme: light) {
   a:hover {
     color: #747bff;

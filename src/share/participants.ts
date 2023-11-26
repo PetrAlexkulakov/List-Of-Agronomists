@@ -1,4 +1,12 @@
-export const participants = [
+export interface IParticipant {
+    name: string;
+    phone: string;
+    role: string;
+    activeUntil: string;
+    department: string;
+}
+
+export const participants: IParticipant[] = [
     {
         name: 'Username345',
         phone: '+9 (999) 999 99 99',
@@ -7,63 +15,63 @@ export const participants = [
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'AnotherDepartmentPerson',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Новое отделение'
     },
     {
-        name: 'Username345',
+        name: 'Username34',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username3',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username1',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username2',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username4',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username5',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
         department: 'Отделение намбер уан'
     },
     {
-        name: 'Username345',
+        name: 'Username6',
         phone: '+9 (999) 999 99 99',
         role: 'Агроном',
         activeUntil: 'до 24.02.2021',
