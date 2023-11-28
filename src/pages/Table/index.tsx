@@ -8,7 +8,7 @@ import MyForm from "../../components/MyForm";
 const Table = () => {
   const [filteredPeople, setFilteredPeople] = useState(participants)
   const [viewedPeople, setViewedPeople] = useState(filteredPeople);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = (indexToDelete: number) => {
     const updatedPeople = [...filteredPeople];
@@ -77,7 +77,7 @@ const Table = () => {
           </div>
         }
       </div>
-      <MyForm isOpen={isOpen} closeModal={closeModal} />
+      <MyForm isOpen={isOpen} closeModal={closeModal} filteredPeople={filteredPeople} />
     </>
   )
 }

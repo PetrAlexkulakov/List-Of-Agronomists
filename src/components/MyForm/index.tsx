@@ -1,17 +1,49 @@
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment } from "react"
-import { useForm } from "react-hook-form"
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import styles from './styles.module.scss';
+import { IParticipant } from "../../share/participants";
 
-const MyForm = ({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => void }) => {
+const MyForm = ({ isOpen, closeModal, filteredPeople }: { 
+    isOpen: boolean, closeModal: () => void, filteredPeople: IParticipant[] 
+  }) => {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
+    reset
   } = useForm()
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = ({
+    name,
+    department,
+    isTemporary,
+    phone,
+    role,
+    comment,
+    temporaryFor,
+  }: {
+    name: string;
+    department: string;
+    comment: string;
+    isTemporary: boolean;
+    phone: string;
+    role: string;
+    temporaryFor: string;
+  }) => {
+    const newParticipant: IParticipant = {
+      name,
+      phone,
+      role,
+      activeUntil: isTemporary ? temporaryFor : 'Постоянный',
+      department,
+      comment
+    };
+  
+    filteredPeople.push(newParticipant);
+    closeModal()
+    reset()
+  }
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -40,28 +72,28 @@ const MyForm = ({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => voi
               >
                 <Dialog.Panel className="w-3/5 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div>Добавить нового участника</div>
-                  <form className={styles.mainForm} onSubmit={handleSubmit(onSubmit)}>
-                    <input type="text" name="name" placeholder="Имя" />
-                    <input type="text" name="department" placeholder="Отделение" />
+                  <form className={styles.mainForm} onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}>
+                    <input {...register("name")} type="text" name="name" placeholder="Имя" />
+                    <input {...register("department")} type="text" name="department" placeholder="Отделение" />
                     <div>
-                      <select name="role" id="">
-                        <option value="agronomist">Агроном</option>
-                        <option value="director">Руководитель</option>
+                      <select {...register("role")} name="role" id="">
+                        <option value="Агроном">Агроном</option>
+                        <option value="Руководитель">Руководитель</option>
                       </select>
-                      <input type="text" name="phone" placeholder="Телефон приглашаемого" />
+                      <input {...register("phone")} type="text" name="phone" placeholder="Телефон приглашаемого" />
                     </div>
                     <div className="flex place-content-between">
                       <div className="w-1/2">
-                        <input type="checkbox" name="isTemporary" id="isTemporary" />
+                        <input {...register("isTemporary")} type="checkbox" name="isTemporary" id="isTemporary" />
                         <label htmlFor="isTemporary"></label>
                         <div className="flex flex-col">
                           <div>Временный сотрудник</div>
                           <p>Укажите до какого срока нужен доступ</p>
                         </div>
                       </div>
-                      <input className={styles.mainForm__inputDate} type="date" name="temporaryFor" id="" />
+                      <input {...register("temporaryFor")} className={styles.mainForm__inputDate} type="date" name="temporaryFor" id="" />
                     </div>
-                    <textarea name="comment" id="" cols={50} rows={3}></textarea>
+                    <textarea {...register("comment")} name="comment" id="" cols={50} rows={3}></textarea>
                     <button type="submit">Сохранить</button>
                   </form>
                 </Dialog.Panel>

@@ -4,6 +4,7 @@ export interface IParticipant {
     role: string;
     activeUntil: string;
     department: string;
+    comment?: string;
 }
 
 export const participants: IParticipant[] = [
