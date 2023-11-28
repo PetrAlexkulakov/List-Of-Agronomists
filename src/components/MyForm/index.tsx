@@ -70,9 +70,12 @@ const MyForm = ({ isOpen, closeModal, filteredPeople }: {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-3/5 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div>Добавить нового участника</div>
-                  <form className={styles.mainForm} onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}>
+                <Dialog.Panel className="w-full md:w-3/5 p-0 pb-6 transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+                  <div className="flex place-content-between p-6 py-3 border-b-2 order-slate-300">
+                    <h3>Добавить нового участника</h3>
+                    <button className={styles.closeIcon + ' border-0 rounded-none duration-0 p-0'} onClick={closeModal}></button>
+                  </div>
+                  <form className={styles.mainForm + ' p-6'} onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}>
                     <input {...register("name")} type="text" name="name" placeholder="Имя" />
                     <input {...register("department")} type="text" name="department" placeholder="Отделение" />
                     <div>
