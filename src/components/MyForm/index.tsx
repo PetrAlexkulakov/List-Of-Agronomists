@@ -38,13 +38,7 @@ const MyForm = ({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => voi
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  {/* <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Добавить нового участника
-                  </Dialog.Title> */}
+                <Dialog.Panel className="w-3/5 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div>Добавить нового участника</div>
                   <form className={styles.mainForm} onSubmit={handleSubmit(onSubmit)}>
                     <input type="text" name="name" placeholder="Имя" />
@@ -56,9 +50,9 @@ const MyForm = ({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => voi
                       </select>
                       <input type="text" name="phone" placeholder="Телефон приглашаемого" />
                     </div>
-                    <div>
-                      <div>
-                        <input className={styles.mainForm__inputCheckbox} type="checkbox" name="isTemporary" id="isTemporary" />
+                    <div className="flex place-content-between">
+                      <div className="w-1/2">
+                        <input type="checkbox" name="isTemporary" id="isTemporary" />
                         <label htmlFor="isTemporary"></label>
                         <div className="flex flex-col">
                           <div>Временный сотрудник</div>
