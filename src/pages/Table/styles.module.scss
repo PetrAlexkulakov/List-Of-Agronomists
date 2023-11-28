@@ -1,5 +1,11 @@
 .tablePage {
     padding: 0 5%;
+
+    @media screen and (max-width: 680px) {
+        thead {
+            display: none;
+        }
+    }
 }
 .mainTable {
     padding: 2%;

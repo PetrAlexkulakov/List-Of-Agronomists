@@ -9,6 +9,7 @@ const Table = () => {
   const [filteredPeople, setFilteredPeople] = useState(participants)
   const [viewedPeople, setViewedPeople] = useState(filteredPeople);
   const [isOpen, setIsOpen] = useState(false);
+  const isSmallScreen = window.innerWidth < 680
 
   const handleDelete = (indexToDelete: number) => {
     const updatedPeople = [...filteredPeople];
@@ -30,15 +31,16 @@ const Table = () => {
 
   return (
     <>
-      <div className={styles.tablePage + " w-9/12 float-right bg-slate-50"}>
+      <div className={styles.tablePage + " w-full md:w-9/12 float-right bg-slate-50"}>
         <p className="text-base">Агрономы и участники</p>
-        <div className="flex place-content-between mb-4">
-          <h2>Участники хозяйства</h2>
+        <div className="flex place-content-between flex-wrap mb-4">
+          <h2 className="mb-2">Участники хозяйства</h2>
           <NewUserButton openModal={openModal}>Добавить участника</NewUserButton>
         </div>
         {viewedPeople &&
+        <>
+          <MyCombobox filteredPeople={filteredPeople} setViewedPeople={setViewedPeople} />
           <div className={styles.mainTable + " bg-white"}>
-            <MyCombobox filteredPeople={filteredPeople} setViewedPeople={setViewedPeople} />
             <table className="w-full">
               <thead>
                 <tr>
@@ -48,33 +50,63 @@ const Table = () => {
                 </tr>
               </thead>
               <tbody>
-                {viewedPeople.map((item, index) =>
-                  <tr key={index}>
-                    <td>
-                      <div className='font-bold'>{item.name}</div>
-                      <p>{item.phone}</p>
-                    </td>
-                    <td>
-                      <div>
-                        <div>{item.role}</div>
-                        <p>{item.activeUntil}</p>
-                      </div>
-                    </td>
-                    <td className="flex place-content-between content-center">
-                      <div>{item.department}</div>
-                      <div className="flex gap-1">
-                        <button className={styles.icon + ' ' + styles.imgEdit} />
-                        <button
-                          onClick={() => handleDelete(index)}
-                          className={styles.icon + ' ' + styles.imgDelete}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                )}
+              {viewedPeople.map((item, index) => {
+                if (!isSmallScreen) {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <div className='font-bold'>{item.name}</div>
+                        <p>{item.phone}</p>
+                      </td>
+                      <td>
+                        <div>
+                          <div>{item.role}</div>
+                          <p>{item.activeUntil}</p>
+                        </div>
+                      </td>
+                      <td className="flex place-content-between content-center">
+                        <div>{item.department}</div>
+                      </td>
+                      <td className="p-0">
+                        <div className="flex gap-1">
+                          <button className={styles.icon + ' ' + styles.imgEdit} />
+                          <button
+                            onClick={() => handleDelete(index)}
+                            className={styles.icon + ' ' + styles.imgDelete}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                } else {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <div className='font-bold'>{item.name}</div>
+                        <p>{item.phone}</p>
+                        <div>{item.department}</div>
+                      </td>
+                      <td>
+                        <div className="flex gap-1 place-content-end">
+                          <button className={styles.icon + ' ' + styles.imgEdit} />
+                          <button
+                            onClick={() => handleDelete(index)}
+                            className={styles.icon + ' ' + styles.imgDelete}
+                          />
+                        </div>
+                        <div>
+                          <div>{item.role}</div>
+                          <p>{item.activeUntil}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
               </tbody>
             </table>
           </div>
+        </>
         }
       </div>
       <MyForm isOpen={isOpen} closeModal={closeModal} filteredPeople={filteredPeople} />

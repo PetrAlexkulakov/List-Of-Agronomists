@@ -25,7 +25,7 @@ export function MyCombobox({ filteredPeople, setViewedPeople }: {
 
   return (
     <Combobox value={selectedPerson} onChange={handleSelectPerson}>
-      <div className='flex w-full items-center mb-5'>
+      <div className='flex w-full items-center p-3 bg-white sm:mb-0 mb-3'>
         <Combobox.Input
           placeholder='Введите агронома/отделение'
           className={styles.searchInput}
