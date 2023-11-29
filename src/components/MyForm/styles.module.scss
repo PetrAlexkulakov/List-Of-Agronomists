@@ -1,0 +1,65 @@
+.mainForm {
+    padding: 0%;
+
+    input, select, textarea {
+        width: 100%;
+        padding: 1%;
+        border: 1px solid var(--color-secondary);
+        border-radius: 1%;
+        margin-bottom: 3%;
+    }
+    input[type="date"]{
+        width: 50% !important;
+        float: right;
+    }
+    div {
+        display: flex;
+        gap: 2%;
+    }
+    button[type="submit"] {
+        background-color: var(--color-primary);
+        color: white;
+        float: right;
+        padding: 2% 8%;
+        border-radius: 1%;
+    }
+    input[type="checkbox"]{
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+    input[type="checkbox"]+label {
+        display: inline-flex;
+        user-select: none;
+        margin-top: 1.5%;
+    }
+    input[type="checkbox"]+label::before {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        flex-shrink: 0;
+        flex-grow: 0;
+        border: 1px solid #adb5bd;
+        border-radius: 0.25em;
+        margin-right: 0.5em;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+    }
+    input[type="checkbox"]:not(:disabled):active+label::before {
+        background: url('../../assets/check.svg') var(--color-primary) no-repeat center center;
+    }
+    input[type="checkbox"]:checked+label::before {
+        background: url('../../assets/check.svg') var(--color-primary) no-repeat center center;
+    }
+    input[type="checkbox"]:disabled+label::before {
+        background-color: #e9ecef;
+    }
+}
+
+.closeIcon {
+    width: 22px;
+    height: 22px;
+    background: url('../../assets/Close.svg') #FFF no-repeat center center;
+}
