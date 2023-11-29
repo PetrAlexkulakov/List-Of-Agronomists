@@ -19,7 +19,7 @@ export function MyCombobox({ filteredPeople, setViewedPeople }: {
               const matchDepartment = person.department.toLowerCase().includes(query.toLowerCase());
               const matchName = person.name.toLowerCase().includes(query.toLowerCase());
 
-              return matchDepartment || (matchName && self.findIndex((p) => p.name === person.name) === index);
+              return matchDepartment || (matchName && self.findIndex((p) => p.id === person.id) === index);
             }));
   }
 

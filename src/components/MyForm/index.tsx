@@ -1,17 +1,42 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import styles from './styles.module.scss';
 import { IParticipant } from "../../share/participants";
+import { v4 as uuidv4 } from 'uuid';
 
-const MyForm = ({ isOpen, closeModal, filteredPeople }: { 
-    isOpen: boolean, closeModal: () => void, filteredPeople: IParticipant[] 
+const MyForm = ({ isOpen, closeModal, filteredPeople, editPerson }: { 
+    isOpen: boolean, 
+    closeModal: () => void, 
+    filteredPeople: IParticipant[],
+    editPerson: IParticipant | null 
   }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     reset
   } = useForm()
+
+  
+  useEffect(() => {
+    if (editPerson) {
+      setValue("name", editPerson.name);
+      setValue("department", editPerson.department);
+      setValue("phone", editPerson.phone);
+      setValue("isTemporary", Boolean(editPerson.isTemporary));
+      setValue("role", editPerson.role);
+      setValue(
+        "temporaryFor",
+        editPerson.isTemporary
+          ? editPerson.activeUntil?.split(".").reverse().join("-")
+          : ""
+      );
+      setValue("comment", editPerson.comment);
+    } else {
+      reset();
+    }
+  }, [editPerson, reset, setValue]);
 
   const onSubmit = ({
     name,
@@ -31,15 +56,21 @@ const MyForm = ({ isOpen, closeModal, filteredPeople }: {
     temporaryFor: string;
   }) => {
     const newParticipant: IParticipant = {
+      id: uuidv4(),
       name,
       phone,
       role,
-      activeUntil: isTemporary ? temporaryFor : 'Постоянный',
+      activeUntil: isTemporary ? temporaryFor.split("-").reverse().join(".") : 'Постоянный',
       department,
-      comment
+      comment,
+      isTemporary,
     };
-  
-    filteredPeople.push(newParticipant);
+    if (editPerson) {
+      const personId = filteredPeople.findIndex((p) => p.id === editPerson.id)
+      filteredPeople[personId] = newParticipant;
+    } else {
+      filteredPeople.push(newParticipant);
+    }
     closeModal()
     reset()
   }
@@ -70,33 +101,73 @@ const MyForm = ({ isOpen, closeModal, filteredPeople }: {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full md:w-3/5 p-0 pb-6 transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel 
+                  className="w-full md:w-3/5 p-0 pb-6 transform overflow-hidden rounded-2xl 
+                    bg-white text-left align-middle shadow-xl transition-all"
+                >
                   <div className="flex place-content-between p-6 py-3 border-b-2 order-slate-300">
-                    <h3>Добавить нового участника</h3>
-                    <button className={styles.closeIcon + ' border-0 rounded-none duration-0 p-0'} onClick={closeModal}></button>
+                    {editPerson ?
+                      <h3>Редактирование участника</h3>
+                      :
+                      <h3>Добавить нового участника</h3>
+                    }
+                    <button className={styles.closeIcon + ' border-0 rounded-none duration-0 p-0'} onClick={closeModal} />
                   </div>
                   <form className={styles.mainForm + ' p-6'} onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}>
-                    <input {...register("name")} type="text" name="name" placeholder="Имя" />
-                    <input {...register("department")} type="text" name="department" placeholder="Отделение" />
+                    <input 
+                      {...register("name")} 
+                      type="text" 
+                      name="name" 
+                      placeholder="Имя" 
+                    />
+                    <input 
+                      {...register("department")} 
+                      type="text" 
+                      name="department" 
+                      placeholder="Отделение" 
+                    />
                     <div>
-                      <select {...register("role")} name="role" id="">
+                      <select 
+                        {...register("role")} 
+                        name="role" 
+                      >
                         <option value="Агроном">Агроном</option>
                         <option value="Руководитель">Руководитель</option>
                       </select>
-                      <input {...register("phone")} type="text" name="phone" placeholder="Телефон приглашаемого" />
+                      <input 
+                        {...register("phone")} 
+                        type="text" 
+                        name="phone" 
+                        placeholder="Телефон приглашаемого" 
+                      />
                     </div>
                     <div className="flex place-content-between">
                       <div className="w-1/2">
-                        <input {...register("isTemporary")} type="checkbox" name="isTemporary" id="isTemporary" />
+                        <input 
+                          {...register("isTemporary")} 
+                          type="checkbox" 
+                          name="isTemporary" 
+                          id="isTemporary" 
+                        />
                         <label htmlFor="isTemporary"></label>
                         <div className="flex flex-col">
                           <div>Временный сотрудник</div>
                           <p>Укажите до какого срока нужен доступ</p>
                         </div>
                       </div>
-                      <input {...register("temporaryFor")} className={styles.mainForm__inputDate} type="date" name="temporaryFor" id="" />
+                      <input 
+                        {...register("temporaryFor")} 
+                        className={styles.mainForm__inputDate} 
+                        type="date" 
+                        name="temporaryFor"
+                      />
                     </div>
-                    <textarea {...register("comment")} name="comment" id="" cols={50} rows={3}></textarea>
+                    <textarea 
+                      {...register("comment")} 
+                      name="comment" 
+                      cols={50} 
+                      rows={3}
+                    ></textarea>
                     <button type="submit">Сохранить</button>
                   </form>
                 </Dialog.Panel>

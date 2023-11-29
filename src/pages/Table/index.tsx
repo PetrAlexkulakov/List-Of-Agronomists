@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { MyCombobox } from "../../components/MyCombobox"
-import { participants } from "../../share/participants"
+import { IParticipant, participants } from "../../share/participants"
 import NewUserButton from "./NewUserButton";
 import styles from './styles.module.scss';
 import MyForm from "../../components/MyForm";
 
 const Table = () => {
-  const [filteredPeople, setFilteredPeople] = useState(participants)
+  const [filteredPeople, setFilteredPeople] = useState(participants);
   const [viewedPeople, setViewedPeople] = useState(filteredPeople);
+  const [editPerson, setEditPerson] = useState<IParticipant | null>(null);
+  const [indexToEdit, setIndexToEdit] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const isSmallScreen = window.innerWidth < 680
-
-  const handleDelete = (indexToDelete: number) => {
-    const updatedPeople = [...filteredPeople];
-    updatedPeople.splice(indexToDelete, 1);
-
-    setFilteredPeople(updatedPeople);
-  };
 
   function openModal() {
     setIsOpen(true)
@@ -24,6 +19,27 @@ const Table = () => {
   function closeModal() {
     setIsOpen(false)
   }
+  const handleDelete = (indexToDelete: number) => {
+    const updatedPeople = [...filteredPeople];
+    updatedPeople.splice(indexToDelete, 1);
+
+    setFilteredPeople(updatedPeople);
+  };
+
+  const handleEdit = (indexToEdit: number) => {
+    setIndexToEdit(indexToEdit);
+    openModal();
+  };
+
+  const handleCreate = () => {
+    setIndexToEdit(null);
+    openModal()
+  }
+
+  useEffect(() => {
+    setEditPerson(indexToEdit !== null ? participants[indexToEdit] : null);
+  }, [indexToEdit]);
+  
 
   useEffect(() => {
     setViewedPeople(filteredPeople);
@@ -35,7 +51,7 @@ const Table = () => {
         <p className="text-base">Агрономы и участники</p>
         <div className="flex place-content-between flex-wrap mb-4">
           <h2 className="mb-2">Участники хозяйства</h2>
-          <NewUserButton openModal={openModal}>Добавить участника</NewUserButton>
+          <NewUserButton openModal={handleCreate}>Добавить участника</NewUserButton>
         </div>
         {viewedPeople &&
         <>
@@ -61,7 +77,11 @@ const Table = () => {
                       <td>
                         <div>
                           <div>{item.role}</div>
-                          <p>{item.activeUntil}</p>
+                          {item.isTemporary ? 
+                            <p>до {item.activeUntil}</p>
+                          :
+                            <p>{item.activeUntil}</p>
+                          }
                         </div>
                       </td>
                       <td className="flex place-content-between content-center">
@@ -69,7 +89,10 @@ const Table = () => {
                       </td>
                       <td className="p-0">
                         <div className="flex gap-1">
-                          <button className={styles.icon + ' ' + styles.imgEdit} />
+                          <button 
+                            className={styles.icon + ' ' + styles.imgEdit}
+                            onClick={() => handleEdit(index)}
+                          />
                           <button
                             onClick={() => handleDelete(index)}
                             className={styles.icon + ' ' + styles.imgDelete}
@@ -96,7 +119,11 @@ const Table = () => {
                         </div>
                         <div>
                           <div>{item.role}</div>
-                          <p>{item.activeUntil}</p>
+                          {item.isTemporary ? 
+                            <p>до {item.activeUntil}</p>
+                          :
+                            <p>{item.activeUntil}</p>
+                          }
                         </div>
                       </td>
                     </tr>
@@ -109,7 +136,12 @@ const Table = () => {
         </>
         }
       </div>
-      <MyForm isOpen={isOpen} closeModal={closeModal} filteredPeople={filteredPeople} />
+      <MyForm 
+        isOpen={isOpen} 
+        closeModal={closeModal} 
+        filteredPeople={filteredPeople} 
+        editPerson={editPerson}
+      />
     </>
   )
 }
